@@ -7,6 +7,9 @@ import { NoteForm } from './Form'
 import { useLocalStorage } from './useLocalStorage'
 import {v4 as uuidV4} from "uuid"
 import { NoteList } from './NoteList'
+import { EditTags } from './EditTags'
+import { NoteView } from './NoteView'
+import { NoteLayout } from './NoteLayout'
 
 export type Note={ 
   id:string
@@ -57,19 +60,28 @@ function App() {
         }]
       })}
 
+      function onDeleteNote(id:string){
+
+        setNotes(prevNotes=>{
+           console.log("did work")
+            return prevNotes.filter((note)=>note.id!==id)
+            
+        })
+      }
+
       
   return (
     <div className="App">
       <Container className="my-4">  
       <Routes>
-          <Route path="/" element={<NoteList notes={notes}availableTags={tags}/>}/>
+          <Route path="/" element={<NoteList notes={notesWithTags} onDelete={onDeleteNote} availableTags={tags}/>}/>
           <Route path="/new" element={<NewNote 
           onAddTag={addTag}
           availableTags={tags}
           onSubmit={onCreateNote}/>}/>
-          <Route path="/:id">
-              <Route index element={<h1>Show</h1>}/>
-              <Route path="edit"/>
+          <Route path="/:id" element={<NoteLayout notes={notesWithTags}/>}>
+              <Route index element={<NoteView note={notesWithTags}></NoteView>}/>
+              <Route path="edit" element={<EditTags></EditTags>}/>
           </Route>
           <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>

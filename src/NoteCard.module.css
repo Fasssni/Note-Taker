@@ -1,0 +1,31 @@
+.main{ 
+    width:35vh;
+    height:8vw;
+    border:1px solid rgb(174, 172, 172);
+    border-radius: 10px;
+    margin-top:1rem;
+    display:flex;
+    
+    justify-content: space-between;
+    align-items:start;
+    padding:1rem;
+}
+
+.title{ 
+    font-size:1rem;
+    margin:0 0 1rem 1rem;
+    
+}
+
+.tags{ 
+    font-size:14px;
+    display:flex;
+    margin-right:0.8rem;
+    
+}
+
+.tag__title{ 
+    margin-right:0.3rem;
+}
+
+

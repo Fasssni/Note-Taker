@@ -1,15 +1,18 @@
-import {Row,Col,Stack, Button,Form} from "react-bootstrap"
+import {Row,Col,Stack, Button,Form, Card} from "react-bootstrap"
 import { Link } from "react-router-dom"
 import ReactSelect from "react-select"
 import { Note, NoteData, Tag } from "./App"
 import {useState, useMemo} from "react"
+import { NoteCard } from "./NoteCard"
 
 export type NoteListProp={
+    onDelete:(id:string)=>void
     availableTags:Tag[]
     notes:Note[]
 }
 
-export function NoteList({availableTags, notes}:NoteListProp){ 
+
+export function NoteList({availableTags, notes, onDelete}:NoteListProp){ 
 
     const [selectedTags,setSelectedTags]=useState<Tag[]>([])
     const [title, setTitle]=useState('')
@@ -18,10 +21,19 @@ export function NoteList({availableTags, notes}:NoteListProp){
         return( notes.filter(note=>note.title===""||note.title.toLocaleLowerCase().includes(title.toLowerCase())))
 
         
-    }, [title,selectedTags])
+    }, [title,selectedTags, notes])
 
-    console.log(filteredNotes)
+    const simplifiedNotes=useMemo(()=>{
+        return(
+            notes.map((x)=>{
+                return {id:x.id,tags:x.tags,title:x.title, markdown:x.markdown}
+        }))
+    },[notes])
+
+    console.log(1,notes,2,simplifiedNotes)
   
+   
+
     return <>
     <Row className="align-items-center mb-4">
         <Col><h2>Notes</h2></Col>
@@ -76,15 +88,15 @@ export function NoteList({availableTags, notes}:NoteListProp){
         </Row>
     </Form> 
     <Row sx={1} sm={2} lg={3} xl={4}>
-        {/* {filteredNotes.map(note=>{
+        {filteredNotes.map(note=>{
             return( 
                 <Col key={note.id}>
-                    <NoteCard/>
+                    <NoteCard note={note} onDelete={onDelete}></NoteCard>
                 </Col> 
             )
         })
           
-        } */}
+        }
     </Row>
     
     </>
